@@ -302,6 +302,92 @@ Trykk på knappene steg for steg.
 
 </div>
 
+<!-- EKSEMPEL 4 -->
+
+<div class="eksempel">
+
+<h2>Eksempel 4: x² - x - 12</h2>
+
+<div class="uttrykk">
+
+x²
+
+<span class="hover">
+- x
+<div class="tooltip">
+
+Vi leter etter to tall som:
+
+<br><br>
+
+✅ ganges til -12
+
+<br>
+
+✅ summeres til -1
+
+</div>
+</span>
+
+-
+
+<span class="hover">
+12
+<div class="tooltip">
+
+Faktorpar til 12:
+
+<br><br>
+
+1 · 12
+
+<br>
+
+2 · 6
+
+<br>
+
+3 · 4
+
+<br><br>
+
+Siden svaret skal bli negativt,
+må ett av tallene være negativt.
+
+</div>
+</span>
+
+</div>
+
+<div style="text-align:center">
+
+<button onclick="minusSteg1()">
+Steg 1: Test fortegn
+</button>
+
+<button onclick="minusSteg2()">
+Steg 2: Finn riktig par
+</button>
+
+<button onclick="minusSteg3()">
+Steg 3: Faktoriser
+</button>
+
+<button onclick="minusSteg4()">
+Steg 4: Nullpunkter
+</button>
+
+</div>
+
+<div id="minusEksempel" class="output">
+
+<div class="steg">
+Trykk på knappene steg for steg.
+</div>
+
+</div>
+
+</div>
 
 <script>
 
@@ -600,6 +686,126 @@ x=-1
 
 }
 
+function minusSteg1(){
+
+document.getElementById("minusEksempel").innerHTML = `
+
+<h3>Steg 1: Produktet er negativt</h3>
+
+<p>
+
+Siden
+
+</p>
+
+<div class="math">
+-12
+</div>
+
+<p>
+
+er negativt, må ett tall være positivt
+og ett tall være negativt.
+
+</p>
+
+`;
+
+}
+
+function minusSteg2(){
+
+document.getElementById("minusEksempel").innerHTML += `
+
+<hr>
+
+<h3>Steg 2: Test mulighetene</h3>
+
+<div class="math">
+12 + (-1) = 11 ❌
+</div>
+
+<div class="math">
+6 + (-2) = 4 ❌
+</div>
+
+<div class="math">
+4 + (-3) = 1 ❌
+</div>
+
+<div class="math">
+3 + (-4) = -1 ✅
+</div>
+
+<p class="riktig">
+
+Tallene vi trenger er 3 og -4.
+
+</p>
+
+`;
+
+}
+
+function minusSteg3(){
+
+document.getElementById("minusEksempel").innerHTML += `
+
+<hr>
+
+<h3>Steg 3: Faktoriser</h3>
+
+<div class="math">
+x² - x - 12
+</div>
+
+↓
+
+<div class="math">
+(x+3)(x-4)
+</div>
+
+`;
+
+}
+
+function minusSteg4(){
+
+document.getElementById("minusEksempel").innerHTML += `
+
+<hr>
+
+<h3>Steg 4: Finn nullpunktene</h3>
+
+<div class="math">
+(x+3)(x-4)=0
+</div>
+
+<div class="math">
+x+3=0
+</div>
+
+<div class="math">
+x=-3
+</div>
+
+<div class="math">
+x-4=0
+</div>
+
+<div class="math">
+x=4
+</div>
+
+<p class="riktig">
+
+Nullpunktene er x = -3 og x = 4.
+
+</p>
+
+`;
+
+}
 </script>
 
 </body>
