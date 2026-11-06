@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interaktiv faktorisering</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f7fa;
+    margin:40px;
+    line-height:1.6;
+}
+
+h1,h2{
+    text-align:center;
+}
+
+.eksempel{
+    background:white;
+    padding:25px;
+    margin:30px auto;
+    max-width:900px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+.uttrykk{
+    text-align:center;
+    font-size:2.3rem;
+    margin:25px;
+}
+
+.hover{
+    position:relative;
+    cursor:pointer;
+    color:#0066cc;
+    font-weight:bold;
+}
+
+.tooltip{
+    display:none;
+    position:absolute;
+    top:120%;
+    left:50%;
+    transform:translateX(-50%);
+    min-width:240px;
+    background:white;
+    border:2px solid #ddd;
+    border-radius:10px;
+    padding:12px;
+    font-size:1rem;
+    z-index:100;
+    box-shadow:0 3px 10px rgba(0,0,0,0.2);
+}
+
+.hover:hover .tooltip{
+    display:block;
+}
+
+button{
+    padding:10px 18px;
+    margin:5px;
+    border:none;
+    border-radius:8px;
+    background:#0066cc;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#004999;
+}
+
+.output{
+    margin-top:20px;
+    padding:15px;
+    border-left:5px solid #0066cc;
+    background:#eef5ff;
+}
+
+.riktig{
+    color:green;
+    font-weight:bold;
+}
+
+.feil{
+    color:#c0392b;
+}
+
+.steg{
+    background:#f7f7f7;
+    padding:8px;
+    border-radius:6px;
+    margin:5px 0;
+}
+
+.math{
+    font-size:1.5rem;
+    text-align:center;
+    margin:15px;
+}
+</style>
+</head>
+<body>
+
+<h1>Interaktiv faktorisering av andregradsuttrykk</h1>
+
+<!-- EKSEMPEL 1 -->
+
+<div class="eksempel">
+
+<h2>Eksempel 1: x² + 7x + 12</h2>
+
+<div class="uttrykk">
+
+x² +
+
+<span class="hover">
+7x
+<div class="tooltip">
+Vi leter etter to tall som:
+<br><br>
+✅ ganges til 12
+<br>
+✅ summeres til 7
+</div>
+</span>
+
++
+
+<span class="hover">
+12
+<div class="tooltip">
+Mulige faktorpar:
+<br><br>
+1 · 12
+<br>
+2 · 6
+<br>
+3 · 4
+</div>
+</span>
+
+</div>
+
+<div style="text-align:center">
+<button onclick="testDirekte()">Undersøk summene</button>
+<button onclick="visDirekte()">Vis faktorisering</button>
+</div>
+
+<div id="direkte" class="output"></div>
+
+</div>
+
+<!-- EKSEMPEL 2 -->
+
+<div class="eksempel">
+
+<h2>Eksempel 2: 2x² + 7x + 3</h2>
+
+<div class="uttrykk">
+
+<span class="hover">
+2x²
+<div class="tooltip">
+Når tallet foran x² ikke er 1:
+<br><br>
+Finn først
+<br>
+a · c
+<br><br>
+2 · 3 = 6
+</div>
+</span>
+
++
+
+<span class="hover">
+7x
+<div class="tooltip">
+Vi må finne to tall som:
+<br><br>
+✅ ganges til 6
+<br>
+✅ summeres til 7
+</div>
+</span>
+
++
+
+<span class="hover">
+3
+<div class="tooltip">
+Siden a·c = 6:
+<br><br>
+1 · 6
+<br>
+2 · 3
+</div>
+</span>
+
+</div>
+
+<div style="text-align:center">
+
+<button onclick="steg1()">Steg 1: Test par</button>
+
+<button onclick="steg2()">Steg 2: Splitt 7x</button>
+
+<button onclick="steg3()">Steg 3: Grupper</button>
+
+<button onclick="steg4()">Steg 4: Faktoriser grupper</button>
+
+<button onclick="steg5()">Steg 5: Ferdig svar</button>
+
+</div>
+
+<div id="avansert" class="output">
+
+<div class="steg">Trykk på knappene steg for steg.</div>
+
+</div>
+
+</div>
+
+<!-- EKSEMPEL 3 -->
+
+<div class="eksempel">
+
+<h2>Eksempel 3: 2x² + (2+√6)x + √6</h2>
+
+<div class="uttrykk">
+
+<span class="hover">
+2x²
+<div class="tooltip">
+Nå dukker det opp røtter.
+
+Metoden er fortsatt den samme.
+
+Vi undersøker a·c:
+
+2 · √6 = 2√6
+</div>
+</span>
+
++
+
+<span class="hover">
+(2+√6)x
+<div class="tooltip">
+Vi leter etter to tall som:
+
+✅ ganges til 2√6
+
+✅ summeres til 2+√6
+</div>
+</span>
+
++
+
+<span class="hover">
+√6
+<div class="tooltip">
+Konstantleddet inneholder en rot.
+
+Prøv å tenke på mulige faktorpar.
+</div>
+</span>
+
+</div>
+
+<div style="text-align:center">
+
+<button onclick="rotSteg1()">
+Steg 1: Kandidater
+</button>
+
+<button onclick="rotSteg2()">
+Steg 2: Test summene
+</button>
+
+<button onclick="rotSteg3()">
+Steg 3: Finn faktorene
+</button>
+
+<button onclick="rotSteg4()">
+Steg 4: Vis svar
+</button>
+
+</div>
+
+<div id="rotEksempel" class="output">
+
+<div class="steg">
+Trykk på knappene steg for steg.
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+function testDirekte(){
+
+document.getElementById("direkte").innerHTML = `
+<h3>Tester faktorpar:</h3>
+
+<div class="feil">1 + 12 = 13 ❌</div>
+<div class="feil">2 + 6 = 8 ❌</div>
+<div class="riktig">3 + 4 = 7 ✅</div>
+`;
+
+}
+
+function visDirekte(){
+
+document.getElementById("direkte").innerHTML += `
+<hr>
+
+<div class="math">
+(x + 3)(x + 4)
+</div>
+
+<div class="math">
+Nullpunkter:
+<br>
+x = -3 og x = -4
+</div>
+`;
+
+}
+
+function steg1(){
+
+document.getElementById("avansert").innerHTML = `
+<h3>Steg 1</h3>
+
+Vi regner først ut:
+
+<div class="math">
+a·c = 2·3 = 6
+</div>
+
+Tester faktorpar:
+
+<div class="riktig">
+1 + 6 = 7 ✅
+</div>
+
+<div class="feil">
+2 + 3 = 5 ❌
+</div>
+
+Tallene vi trenger er derfor 1 og 6.
+`;
+
+}
+
+function steg2(){
+
+document.getElementById("avansert").innerHTML += `
+
+<hr>
+
+<h3>Steg 2: Splitt midtleddet</h3>
+
+<div class="math">
+2x² + 7x + 3
+</div>
+
+↓
+
+<div class="math">
+2x² + x + 6x + 3
+</div>
+
+Fordi:
+
+<div class="math">
+7x = x + 6x
+</div>
+`;
+
+}
+
+function steg3(){
+
+document.getElementById("avansert").innerHTML += `
+
+<hr>
+
+<h3>Steg 3: Grupper</h3>
+
+<div class="math">
+(2x² + x) + (6x + 3)
+</div>
+
+`;
+
+}
+
+function steg4(){
+
+document.getElementById("avansert").innerHTML += `
+
+<hr>
+
+<h3>Steg 4: Faktoriser hver gruppe</h3>
+
+<div class="math">
+(2x² + x) + (6x + 3)
+</div>
+
+↓
+
+<div class="math">
+x(2x+1) + 3(2x+1)
+</div>
+
+Nå ser vi felles parentes:
+
+<div class="math">
+<span style="color:green">(2x+1)</span>
+</div>
+`;
+
+}
+
+function steg5(){
+
+document.getElementById("avansert").innerHTML += `
+
+<hr>
+
+<h3>Steg 5: Trekk ut felles faktor</h3>
+
+<div class="math">
+x(2x+1)+3(2x+1)
+</div>
+
+↓
+
+<div class="math" style="color:green;font-weight:bold">
+(2x+1)(x+3)
+</div>
+
+<h3>Nullpunkter</h3>
+
+<div class="math">
+2x+1=0
+</div>
+
+<div class="math">
+x=-0.5
+</div>
+
+<div class="math">
+x+3=0
+</div>
+
+<div class="math">
+x=-3
+</div>
+`;
+
+}
+
+function rotSteg1(){
+
+document.getElementById("rotEksempel").innerHTML = `
+
+<h3>Steg 1: Finn tall som ganger til 2√6</h3>
+
+<div class="math">
+1 · 2√6
+</div>
+
+<div class="math">
+√6 · 2
+</div>
+
+<p>
+Vi prøver kandidatene.
+</p>
+
+`;
+
+}
+
+function rotSteg2(){
+
+document.getElementById("rotEksempel").innerHTML += `
+
+<hr>
+
+<h3>Steg 2: Test summene</h3>
+
+<div class="math">
+1 + 2√6
+</div>
+
+<p>Passer ikke.</p>
+
+<div class="math">
+√6 + 2
+</div>
+
+<p class="riktig">
+= 2 + √6 ✅
+</p>
+
+`;
+
+}
+
+function rotSteg3(){
+
+document.getElementById("rotEksempel").innerHTML += `
+
+<hr>
+
+<h3>Steg 3: Bygg faktorene</h3>
+
+<p>
+
+Vi fant tallene
+
+√6 og 2
+
+</p>
+
+<p>
+
+Siden koeffisienten foran x² er 2, prøver vi:
+
+</p>
+
+<div class="math">
+(2x+√6)(x+1)
+</div>
+
+`;
+
+}
+
+function rotSteg4(){
+
+document.getElementById("rotEksempel").innerHTML += `
+
+<hr>
+
+<h3>Steg 4: Kontroller</h3>
+
+<div class="math">
+(2x+√6)(x+1)
+</div>
+
+↓
+
+<div class="math">
+2x² + 2x + √6x + √6
+</div>
+
+↓
+
+<div class="math">
+2x² + (2+√6)x + √6
+</div>
+
+<p class="riktig">
+
+Faktoriseringen stemmer ✅
+
+</p>
+
+<h3>Nullpunkter</h3>
+
+<div class="math">
+2x+√6=0
+</div>
+
+<div class="math">
+x=-√6/2
+</div>
+
+<div class="math">
+x+1=0
+</div>
+
+<div class="math">
+x=-1
+</div>
+
+`;
+
+}
+
+</script>
+
+</body>
+</html>
