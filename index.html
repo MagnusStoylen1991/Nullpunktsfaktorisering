@@ -306,14 +306,35 @@ Trykk på knappene steg for steg.
 
 <div class="eksempel">
 
-<h2>Eksempel 4: x² - x - 12</h2>
+<h2>Eksempel 4: 3x² - 11x - 4</h2>
 
 <div class="uttrykk">
 
-x²
+<span class="hover">
+3x²
+<div class="tooltip">
+
+Nå må vi bruke ac-metoden.
+
+<br><br>
+
+a = 3
+
+<br>
+
+c = -4
+
+<br><br>
+
+a·c = -12
+
+</div>
+</span>
+
+-
 
 <span class="hover">
-- x
+11x
 <div class="tooltip">
 
 Vi leter etter to tall som:
@@ -324,7 +345,7 @@ Vi leter etter to tall som:
 
 <br>
 
-✅ summeres til -1
+✅ summeres til -11
 
 </div>
 </span>
@@ -332,27 +353,22 @@ Vi leter etter to tall som:
 -
 
 <span class="hover">
-12
+4
 <div class="tooltip">
 
-Faktorpar til 12:
+Mulige faktorpar til 12:
 
 <br><br>
 
-1 · 12
+1 og -12
 
 <br>
 
-2 · 6
+2 og -6
 
 <br>
 
-3 · 4
-
-<br><br>
-
-Siden svaret skal bli negativt,
-må ett av tallene være negativt.
+3 og -4
 
 </div>
 </span>
@@ -361,25 +377,29 @@ må ett av tallene være negativt.
 
 <div style="text-align:center">
 
-<button onclick="minusSteg1()">
-Steg 1: Test fortegn
+<button onclick="minusAc1()">
+Steg 1: Test kandidatene
 </button>
 
-<button onclick="minusSteg2()">
-Steg 2: Finn riktig par
+<button onclick="minusAc2()">
+Steg 2: Splitt midtleddet
 </button>
 
-<button onclick="minusSteg3()">
-Steg 3: Faktoriser
+<button onclick="minusAc3()">
+Steg 3: Grupper
 </button>
 
-<button onclick="minusSteg4()">
-Steg 4: Nullpunkter
+<button onclick="minusAc4()">
+Steg 4: Faktoriser
+</button>
+
+<button onclick="minusAc5()">
+Steg 5: Nullpunkter
 </button>
 
 </div>
 
-<div id="minusEksempel" class="output">
+<div id="minusAcEksempel" class="output">
 
 <div class="steg">
 Trykk på knappene steg for steg.
@@ -769,37 +789,149 @@ x² - x - 12
 
 }
 
-function minusSteg4(){
+function minusAc1(){
 
-document.getElementById("minusEksempel").innerHTML += `
+document.getElementById("minusAcEksempel").innerHTML = `
 
-<hr>
-
-<h3>Steg 4: Finn nullpunktene</h3>
+<h3>Steg 1: Finn to tall</h3>
 
 <div class="math">
-(x+3)(x-4)=0
+a·c = 3·(-4)=-12
 </div>
 
 <div class="math">
-x+3=0
+1 + (-12) = -11 ✅
 </div>
 
 <div class="math">
-x=-3
+2 + (-6) = -4 ❌
 </div>
 
 <div class="math">
-x-4=0
-</div>
-
-<div class="math">
-x=4
+3 + (-4) = -1 ❌
 </div>
 
 <p class="riktig">
 
-Nullpunktene er x = -3 og x = 4.
+Tallene vi trenger er 1 og -12.
+
+</p>
+
+`;
+
+}
+
+function minusAc2(){
+
+document.getElementById("minusAcEksempel").innerHTML += `
+
+<hr>
+
+<h3>Steg 2: Splitt midtleddet</h3>
+
+<div class="math">
+
+3x² - 11x - 4
+
+</div>
+
+↓
+
+<div class="math">
+
+3x² + x - 12x - 4
+
+</div>
+
+`;
+
+}
+
+function minusAc3(){
+
+document.getElementById("minusAcEksempel").innerHTML += `
+
+<hr>
+
+<h3>Steg 3: Grupper</h3>
+
+<div class="math">
+
+(3x²+x)+(-12x-4)
+
+</div>
+
+`;
+
+}
+
+function minusAc4(){
+
+document.getElementById("minusAcEksempel").innerHTML += `
+
+<hr>
+
+<h3>Steg 4: Faktoriser hver gruppe</h3>
+
+<div class="math">
+
+x(3x+1)-4(3x+1)
+
+</div>
+
+↓
+
+<div class="math" style="color:green;font-weight:bold">
+
+(3x+1)(x-4)
+
+</div>
+
+`;
+
+}
+
+function minusAc5(){
+
+document.getElementById("minusAcEksempel").innerHTML += `
+
+<hr>
+
+<h3>Steg 5: Finn nullpunktene</h3>
+
+<div class="math">
+
+(3x+1)(x-4)=0
+
+</div>
+
+<div class="math">
+
+3x+1=0
+
+</div>
+
+<div class="math">
+
+x=-1/3
+
+</div>
+
+<div class="math">
+
+x-4=0
+
+</div>
+
+<div class="math">
+
+x=4
+
+</div>
+
+<p class="riktig">
+
+Nullpunktene er x = -1/3 og x = 4.
 
 </p>
 
