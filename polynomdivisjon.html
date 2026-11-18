@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polynomdivisjon steg for steg</title>
+
+<style>
+
+body{
+    margin:0;
+    padding:40px;
+    background:#f5f5f5;
+    font-family:Cambria, Georgia, serif;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    background:white;
+    padding:35px;
+    border-radius:10px;
+    box-shadow:0 0 12px rgba(0,0,0,.08);
+}
+
+h1{
+    text-align:center;
+    font-weight:normal;
+}
+
+#forklaring{
+    background:#f8f8f8;
+    border-left:4px solid #777;
+    padding:15px;
+    margin-bottom:25px;
+    min-height:60px;
+}
+
+#arbeid{
+    font-family:"Courier New", monospace;
+    font-size:2rem;
+    line-height:1.2;
+    white-space:pre;
+}
+
+.topline{
+    color:#b71c1c;
+    font-weight:bold;
+    display:block;
+    white-space:nowrap;
+}
+
+.active{
+    color:#0a8a0a;
+    font-weight:bold;
+    background:#ebfaeb;
+    padding:0 2px;
+    border-radius:4px;
+}
+
+.quotient{
+    color:#1565c0;
+    font-weight:bold;
+}
+
+.minus{
+    color:#5f3dc4;
+}
+
+button{
+    margin-top:20px;
+    padding:10px 22px;
+    border:none;
+    border-radius:5px;
+    background:#1f4e79;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#163858;
+}
+
+.fraction{
+    font-family:Cambria, Georgia, serif;
+    font-size:2rem;
+    text-align:center;
+    line-height:1.1;
+}
+
+.frac{
+    display:inline-block;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.frac-top{
+    border-bottom:2px solid black;
+    padding:0 12px 4px 12px;
+}
+
+.frac-bottom{
+    padding-top:4px;
+}
+
+.smallFraction{
+    font-size:0.7em;
+    vertical-align:middle;
+}
+
+.smallFrac{
+    display:inline-block;
+    text-align:center;
+    line-height:1;
+    margin-left:4px;
+}
+
+.smallFracTop{
+    border-bottom:2px solid currentColor;
+    padding:0 4px;
+}
+
+.smallFracBottom{
+    padding-top:2px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Polynomdivisjon steg for steg</h1>
+
+<div id="forklaring"></div>
+
+<div id="arbeid"></div>
+
+<button onclick="nesteSteg()">Neste steg</button>
+
+</div>
+
+<script>
+
+let steg = 0;
+
+const stegListe = [
+
+{
+forklaring:"Vi skriver inn 0x siden x-leddet mangler.",
+visning:`
+<span class="topline">(x³ − x² + 0x + 1):(x − 2)=</span>
+`
+},
+
+{
+forklaring:"Del x³ på x.",
+visning:`
+<span class="topline">(<span class="active">x³</span> − x² + 0x + 1):(<span class="active">x</span> − 2)=<span class="quotient">x²</span></span>
+`
+},
+
+{
+forklaring:"Vi begynner multiplikasjonen med x²·x.",
+visning:`
+<span class="topline">(x³ − x² + 0x + 1):(<span class="active">x</span> − 2)=<span class="active">x²</span></span>
+
+  x³ − x² + 0x + 1
+<span class="minus">−(x³</span>
+`
+},
+
+{
+forklaring:"Deretter x²·(−2).",
+visning:`
+<span class="topline">(x³ − x² + 0x + 1):(x <span class="active">−2</span>)=<span class="active">x²</span></span>
+
+  x³ − x² + 0x + 1
+<span class="minus">−(x³ − 2x²)</span>
+`
+},
+
+{
+forklaring:"Trekk fra.",
+visning:`
+<span class="topline">(x³ − x² + 0x + 1):(x − 2)=x²</span>
+
+  x³ − x² + 0x + 1
+<span class="minus">−(x³ − 2x²)</span>
+────────────────
+        x² + 0x
+`
+},
+
+{
+forklaring:"Del x² på x.",
+visning:`
+<span class="topline">(x³ − x² + 0x + 1):(<span class="active">x</span> − 2)=x² + <span class="quotient">x</span></span>
+
+  x³ − x² + 0x + 1
+<span class="minus">−(x³ − 2x²)</span>
+────────────────
+     <span class="active">x²</span> + 0x
+`
+},
+
+{
+forklaring:"Multipliser x·x.",
+visning:`
+<span class="topline">(x³ − x² + 0x + 1):(<span class="active">x</span> − 2)=x² + <span class="active">x</span></span>
+
+  x³ − x² + 0x + 1
+<span class="minus">−(x³ − 2x²)</span>
+────────────────
+        x² + 0x
+     <span class="minus">−(x²</span>
+`
+},
+
+{
+forklaring:"Multipliser x·(−2).",
+visning:`
+<span class="topline">(x³ − x² + 0x + 1):(x <span class="active">−2</span>)=x² + <span class="active">x</span></span>
+
+  x³ − x² + 0x + 1
+<span class="minus">−(x³ − 2x²)</span>
+────────────────
+        x² + 0x
+     <span class="minus">−(x² − 2x)</span>
+`
+},
+
+{
+forklaring:"Trekk fra igjen.",
+visning:`
+<span class="topline">(x³ − x² + 0x + 1):(x − 2)=x² + x</span>
+
+  x³ − x² + 0x + 1
+<span class="minus">−(x³ − 2x²)</span>
+────────────────
+        x² + 0x
+     <span class="minus">−(x² − 2x)</span>
+     ──────────
+            2x + 1
+`
+},
+
+{
+forklaring:"Del 2x på x.",
+visning:`
+<span class="topline">(x³ − x² + 0x + 1):(<span class="active">x</span> − 2)=x² + x + <span class="quotient">2</span></span>
+
+  x³ − x² + 0x + 1
+<span class="minus">−(x³ − 2x²)</span>
+────────────────
+        x² + 0x
+     <span class="minus">−(x² − 2x)</span>
+     ──────────
+          <span class="active">2x</span> + 1
+`
+},
+
+{
+forklaring:"Multipliser 2·x.",
+visning:`
+<span class="topline">(x³ − x² + 0x + 1):(<span class="active">x</span> − 2)=x² + x + <span class="active">2</span></span>
+
+  x³ − x² + 0x + 1
+<span class="minus">−(x³ − 2x²)</span>
+────────────────
+        x² + 0x
+     <span class="minus">−(x² − 2x)</span>
+     ──────────
+            2x + 1
+          <span class="minus">−(2x</span>
+`
+},
+
+{
+forklaring:"Multipliser 2·(−2).",
+visning:`
+<span class="topline">(x³ − x² + 0x + 1):(x <span class="active">−2</span>)=x² + x + <span class="active">2</span></span>
+
+  x³ − x² + 0x + 1
+<span class="minus">−(x³ − 2x²)</span>
+────────────────
+        x² + 0x
+     <span class="minus">−(x² − 2x)</span>
+     ──────────
+            2x + 1
+          <span class="minus">−(2x − 4)</span>
+`
+},
+
+{
+forklaring:"Trekk fra en siste gang.",
+visning:`
+<span class="topline">(x³ − x² + 0x + 1):(x − 2)=x² + x + 2</span>
+
+  x³ − x² + 0x + 1
+<span class="minus">−(x³ − 2x²)</span>
+────────────────
+        x² + 0x
+     <span class="minus">−(x² − 2x)</span>
+     ──────────
+            2x + 1
+          <span class="minus">−(2x − 4)</span>
+          ─────────
+                5
+`
+},
+
+{
+    forklaring:"Trekk fra en siste gang.",
+visning:`
+<span class="topline">
+(x³ − x² + 0x + 1):(x − 2)
+=
+x² + x + 2 +
+
+<span class="smallFraction">
+<span class="smallFrac">
+<div class="smallFracTop">5</div>
+<div class="smallFracBottom">x − 2</div>
+</span>
+</span>
+</span>
+
+  x³ − x² + 0x + 1
+<span class="minus">−(x³ − 2x²)</span>
+────────────────
+        x² + 0x
+     <span class="minus">−(x² − 2x)</span>
+     ──────────
+            2x + 1
+          <span class="minus">−(2x − 4)</span>
+          ─────────
+                5
+`
+
+},
+
+
+
+
+
+
+];
+
+function visSteg(){
+    document.getElementById("forklaring").innerHTML = stegListe[steg].forklaring;
+    document.getElementById("arbeid").innerHTML = stegListe[steg].visning;
+}
+
+function nesteSteg(){
+    if(steg < stegListe.length-1){
+        steg++;
+    }
+    visSteg();
+}
+
+visSteg();
+
+</script>
+
+</body>
+</html>
